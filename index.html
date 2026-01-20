@@ -12,7 +12,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        /* 印刷時のスタイル調整 */
         @media print {
             body { background: white; -webkit-print-color-adjust: exact; }
             .no-print { display: none !important; }
@@ -40,7 +39,7 @@
                     <i data-lucide="map-pin" class="text-white w-5 h-5"></i>
                 </div>
                 <div>
-                    <h1 id="header-business-name" class="text-xl font-bold text-gray-900">読み込み中...</h1>
+                    <h1 id="header-business-name" class="text-xl font-bold text-gray-900">店舗名読み込み中...</h1>
                     <p class="text-xs text-gray-500">Googleビジネスプロフィール レポート</p>
                 </div>
             </div>
@@ -88,26 +87,26 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 print:grid-cols-4">
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 print:border print:shadow-none">
                     <div class="flex justify-between items-start mb-2">
-                        <p class="text-sm font-medium text-gray-500">総検索・閲覧数</p>
+                        <p class="text-sm font-medium text-gray-500">総表示回数 (閲覧数)</p>
                         <div class="p-2 bg-gray-50 rounded-lg no-print"><i data-lucide="search" class="w-5 h-5 text-blue-600"></i></div>
                     </div>
                     <div class="flex items-end gap-2 mb-1">
                         <h3 id="kpi-total-views" class="text-2xl font-bold text-gray-900">0</h3>
                     </div>
                     <div id="kpi-views-growth" class="flex items-center text-xs font-medium"></div>
-                    <p class="text-xs text-gray-400 mt-2">検索 + マップ表示</p>
+                    <p class="text-xs text-gray-400 mt-2">検索 + マップ (モバイル/PC合算)</p>
                 </div>
 
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 print:border print:shadow-none">
                     <div class="flex justify-between items-start mb-2">
-                        <p class="text-sm font-medium text-gray-500">総アクション数</p>
+                        <p class="text-sm font-medium text-gray-500">アクション数合計</p>
                         <div class="p-2 bg-gray-50 rounded-lg no-print"><i data-lucide="mouse-pointer" class="w-5 h-5 text-green-600"></i></div>
                     </div>
                     <div class="flex items-end gap-2 mb-1">
                         <h3 id="kpi-total-actions" class="text-2xl font-bold text-gray-900">0</h3>
                     </div>
                     <div id="kpi-actions-growth" class="flex items-center text-xs font-medium"></div>
-                    <p class="text-xs text-gray-400 mt-2">ウェブ・電話・ルート</p>
+                    <p class="text-xs text-gray-400 mt-2">ウェブ・通話・ルート・注文他</p>
                 </div>
 
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 print:border print:shadow-none">
@@ -119,61 +118,63 @@
                         <h3 id="kpi-rating" class="text-2xl font-bold text-gray-900">0.0</h3>
                         <span class="text-yellow-500 text-lg">★</span>
                     </div>
-                    <p id="kpi-review-count" class="text-xs text-gray-400 mt-2">全レビュー数: 0</p>
+                    <p id="kpi-review-count" class="text-xs text-gray-400 mt-2">全レビュー数: ---</p>
                 </div>
 
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 print:border print:shadow-none">
                     <div class="flex justify-between items-start mb-2">
-                        <p class="text-sm font-medium text-gray-500">写真閲覧数</p>
-                        <div class="p-2 bg-gray-50 rounded-lg no-print"><i data-lucide="image" class="w-5 h-5 text-purple-600"></i></div>
+                        <p class="text-sm font-medium text-gray-500">モバイル利用率</p>
+                        <div class="p-2 bg-gray-50 rounded-lg no-print"><i data-lucide="smartphone" class="w-5 h-5 text-purple-600"></i></div>
                     </div>
                     <div class="flex items-end gap-2 mb-1">
-                        <h3 id="kpi-photo-views" class="text-2xl font-bold text-gray-900">0</h3>
+                        <h3 id="kpi-mobile-rate" class="text-2xl font-bold text-gray-900">0</h3>
+                        <span class="text-gray-500 text-lg">%</span>
                     </div>
-                    <div class="flex items-center text-xs font-medium text-green-600">
-                        <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> 5.4% <span class="text-gray-400 ml-1 font-normal">前月比</span>
+                    <div class="flex items-center text-xs font-medium text-gray-400">
+                        全閲覧数に占めるモバイルの割合
                     </div>
-                    <p class="text-xs text-gray-400 mt-2">オーナー投稿 + ユーザー投稿</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 print:grid-cols-2">
+                <!-- デバイス別閲覧数 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 print:shadow-none print:border print:break-inside-avoid">
+                    <div class="mb-4">
+                        <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                            <i data-lucide="pie-chart" class="w-5 h-5 text-gray-500"></i>
+                            プラットフォーム別 閲覧内訳
+                        </h2>
+                        <p class="text-sm text-gray-500">モバイルとパソコンの利用比率</p>
+                    </div>
+                    <div class="relative w-full h-64">
+                        <canvas id="chart-devices"></canvas>
+                    </div>
+                </div>
+
+                <!-- アクション内訳 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 print:shadow-none print:border print:break-inside-avoid">
+                    <div class="mb-4">
+                        <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                            <i data-lucide="mouse-pointer" class="w-5 h-5 text-gray-500"></i>
+                            アクションの詳細
+                        </h2>
+                        <p class="text-sm text-gray-500">ユーザーが実行した具体的な行動</p>
+                    </div>
+                    <div class="relative w-full h-64">
+                        <canvas id="chart-actions-details"></canvas>
+                    </div>
                 </div>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 print:shadow-none print:border print:break-inside-avoid">
                 <div class="mb-4">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                        <i data-lucide="search" class="w-5 h-5 text-gray-500"></i>
-                        ビジネスプロフィールの表示回数推移
+                        <i data-lucide="file-text" class="w-5 h-5 text-gray-500"></i>
+                        主な検索キーワード
                     </h2>
-                    <p class="text-sm text-gray-500">検索結果とマップでの表示回数の日次推移</p>
+                    <p class="text-sm text-gray-500">管理画面からコピペして追加してください</p>
                 </div>
-                <div class="relative w-full h-64">
-                    <canvas id="chart-views"></canvas>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 print:grid-cols-2">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 print:shadow-none print:border print:break-inside-avoid">
-                    <div class="mb-4">
-                        <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                            <i data-lucide="mouse-pointer" class="w-5 h-5 text-gray-500"></i>
-                            ユーザーアクションの内訳
-                        </h2>
-                        <p class="text-sm text-gray-500">プロフィールを見たユーザーの行動</p>
-                    </div>
-                    <div class="relative w-full h-64">
-                        <canvas id="chart-actions"></canvas>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 print:shadow-none print:border print:break-inside-avoid">
-                    <div class="mb-4">
-                        <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                            <i data-lucide="file-text" class="w-5 h-5 text-gray-500"></i>
-                            検索クエリ (上位5件)
-                        </h2>
-                        <p class="text-sm text-gray-500">どのようなキーワードで検索されたか</p>
-                    </div>
-                    <div id="keyword-list-container" class="space-y-4"></div>
-                </div>
+                <div id="keyword-list-container" class="space-y-4"></div>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 print:shadow-none print:border print:break-inside-avoid">
@@ -211,11 +212,11 @@
                 <div class="space-y-6">
                     <div class="bg-blue-50 border border-blue-100 p-4 rounded-lg flex items-start gap-3">
                         <div class="bg-blue-100 p-2 rounded-full text-blue-600 mt-0.5">
-                            <i data-lucide="save" class="w-4 h-4"></i>
+                            <i data-lucide="upload" class="w-4 h-4"></i>
                         </div>
                         <div>
-                            <p class="text-sm font-bold text-blue-900">自動保存機能</p>
-                            <p class="text-xs text-blue-700">編集内容はブラウザに自動保存されます。</p>
+                            <p class="text-sm font-bold text-blue-900">CSVインポート対応済み</p>
+                            <p class="text-xs text-blue-700">「GMB insights」形式のCSVファイルを読み込むと、店舗名や数値を自動抽出します。</p>
                         </div>
                     </div>
     
@@ -230,19 +231,30 @@
                         </div>
                     </div>
     
+                    <!-- CSVインポート -->
                     <div class="border-t border-gray-100 pt-6">
-                        <h3 class="text-sm font-bold text-gray-900 mb-4">主要指標 (CSVインポートで自動更新されます)</h3>
+                        <h3 class="text-sm font-bold text-gray-900 mb-4">パフォーマンスレポート(CSV)をインポート</h3>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors relative">
+                            <input type="file" id="csv-file-input" accept=".csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <i data-lucide="file-spreadsheet" class="w-8 h-8 text-gray-400 mx-auto mb-2"></i>
+                            <p class="text-sm text-gray-600 font-medium">CSVファイルをアップロード</p>
+                            <p class="text-xs text-gray-400 mt-1">店舗概要のパフォーマンスCSVを読み込みます</p>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-6">
+                        <h3 class="text-sm font-bold text-gray-900 mb-4">主要指標 (手動微調整用)</h3>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div>
-                                <label class="block text-xs text-gray-500 mb-1">総表示回数</label>
+                                <label class="block text-xs text-gray-500 mb-1">総閲覧数</label>
                                 <input type="number" id="input-totalViews" class="w-full p-2 border border-gray-300 rounded-lg">
                             </div>
                             <div>
-                                <label class="block text-xs text-gray-500 mb-1">表示数成長率 (%)</label>
+                                <label class="block text-xs text-gray-500 mb-1">前月比成長率 (%)</label>
                                 <input type="number" id="input-viewsGrowth" class="w-full p-2 border border-gray-300 rounded-lg">
                             </div>
                             <div>
-                                <label class="block text-xs text-gray-500 mb-1">総アクション数</label>
+                                <label class="block text-xs text-gray-500 mb-1">アクション数</label>
                                 <input type="number" id="input-totalActions" class="w-full p-2 border border-gray-300 rounded-lg">
                             </div>
                             <div>
@@ -252,70 +264,44 @@
                         </div>
                     </div>
     
-                    <!-- キーワード貼り付け -->
                     <div class="border-t border-gray-100 pt-6">
-                        <h3 class="text-sm font-bold text-gray-900 mb-2">検索キーワード（コピペで自動解析）</h3>
+                        <h3 class="text-sm font-bold text-gray-900 mb-2">検索キーワードの追加</h3>
                         <div class="flex gap-2 items-start">
-                            <textarea id="input-keywords-paste" class="w-full p-3 border border-gray-300 rounded-lg text-sm font-mono h-24 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="例:&#10;カフェ 150&#10;ランチ 80"></textarea>
+                            <textarea id="input-keywords-paste" class="w-full p-3 border border-gray-300 rounded-lg text-sm font-mono h-24 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="キーワード 100"></textarea>
                             <button onclick="handleKeywordPaste()" class="flex-shrink-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-1">
-                                <i data-lucide="clipboard-paste" class="w-4 h-4"></i> 解析
+                                <i data-lucide="plus" class="w-4 h-4"></i> 解析
                             </button>
                         </div>
                         <div id="edit-keyword-tags" class="mt-4 bg-gray-50 p-3 rounded-lg flex flex-wrap gap-2 min-h-[40px]"></div>
-                    </div>
-    
-                    <!-- CSVインポート（新規追加） -->
-                    <div class="border-t border-gray-100 pt-6">
-                        <h3 class="text-sm font-bold text-gray-900 mb-4">CSVデータをインポート</h3>
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors relative">
-                            <input type="file" id="csv-file-input" accept=".csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                            <i data-lucide="upload" class="w-8 h-8 text-gray-400 mx-auto mb-2"></i>
-                            <p class="text-sm text-gray-600 font-medium">CSVファイルをアップロード</p>
-                            <p class="text-xs text-gray-400 mt-1">Googleの「パフォーマンス」からエクスポートしたファイルを指定してください</p>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- JavaScript Logic -->
     <script>
-        const STORAGE_KEY = 'gbp_report_html_v2';
+        const STORAGE_KEY = 'gbp_report_html_v3';
         
-        function generateMockData(daysInMonth = 30) {
-            const days = [];
-            for (let i = 1; i <= daysInMonth; i++) {
-                days.push({
-                    day: `${i}日`,
-                    searchView: Math.floor(Math.random() * 500) + 100,
-                    mapView: Math.floor(Math.random() * 800) + 200,
-                    website: Math.floor(Math.random() * 50),
-                    calls: Math.floor(Math.random() * 20),
-                    directions: Math.floor(Math.random() * 30),
-                });
-            }
-            return days;
-        }
-
         const defaultReportData = {
-            "2023-10": {
+            "2025-12": {
                 config: {
-                    businessName: "サンプルカフェ 東京店",
-                    reportPeriod: "2023年10月1日 - 2023年10月31日",
-                    totalViews: 12450,
-                    viewsGrowth: 12.5,
-                    totalActions: 850,
-                    actionsGrowth: -2.3,
-                    averageRating: 4.8,
-                    reviewCount: 124,
-                    comment: "・検索数は前月比+12.5%と好調に推移しました。"
+                    businessName: "オーシマドーナツ 京都祇園店",
+                    reportPeriod: "2025年12月1日 - 2025年12月31日",
+                    totalViews: 4187,
+                    viewsGrowth: 0,
+                    totalActions: 575,
+                    actionsGrowth: 0,
+                    averageRating: 4.5,
+                    reviewCount: 88,
+                    comment: "CSVインポートでデータが反映されます。"
                 },
-                keywords: [
-                    { word: "近くのカフェ", count: 1250 },
-                    { word: "ランチ おすすめ", count: 890 }
-                ],
-                data: generateMockData(31)
+                keywords: [],
+                // デバイス内訳とアクション内訳を保持
+                breakdown: {
+                    mobileSearch: 1615, desktopSearch: 180,
+                    mobileMap: 2336, desktopMap: 56,
+                    calls: 11, website: 201, directions: 185, menu: 178, orders: 0, messages: 0, bookings: 0
+                }
             }
         };
 
@@ -336,7 +322,7 @@
             }
 
             const keys = Object.keys(appState.reports).sort();
-            appState.currentMonthKey = keys[keys.length - 1];
+            appState.currentMonthKey = keys[keys.length - 1] || "2025-12";
 
             setupEventListeners();
             render();
@@ -370,7 +356,6 @@
                 if(currentReport) { currentReport.config.comment = e.target.innerText; saveState(); }
             });
 
-            // CSVインポート
             document.getElementById('csv-file-input').addEventListener('change', handleCsvImport);
         }
 
@@ -387,44 +372,63 @@
         }
 
         function parseAndApplyCsv(csvText) {
-            const rows = csvText.split(/\r?\n/).map(row => row.split(',').map(cell => cell.trim().replace(/^"|"$/g, '')));
-            if (rows.length < 2) return alert("CSVデータが正しくありません。");
+            // GoogleのCSVはダブルクォーテーションで囲まれていることが多いため、単純なsplitではなく考慮する
+            const rows = csvText.split(/\r?\n/).map(row => {
+                const matches = row.match(/(".*?"|[^,]+|(?<=,)(?=,)|(?<=^)(?=,)|(?<=,)(?=$))/g);
+                return matches ? matches.map(m => m.replace(/^"|"$/g, '').trim()) : [];
+            });
 
+            if (rows.length < 3) return alert("CSV形式が正しくありません。");
+
+            // ヘッダー行(1行目)を元にインデックスを特定
             const headers = rows[0];
-            const dataRows = rows.slice(1).filter(row => row.length === headers.length && row[0]);
+            const findIdx = (keywords) => headers.findIndex(h => keywords.some(k => h === k));
 
-            // カラムのインデックスを特定
-            const findIdx = (keywords) => headers.findIndex(h => keywords.some(k => h.includes(k)));
+            const idxName = findIdx(['ビジネス名', 'Business name']);
+            const idxSearchMobile = findIdx(['Google 検索 - モバイル', 'Google Search - Mobile']);
+            const idxSearchDesktop = findIdx(['Google 検索 - パソコン', 'Google Search - Desktop']);
+            const idxMapMobile = findIdx(['Google マップ - モバイル', 'Google Maps - Mobile']);
+            const idxMapDesktop = findIdx(['Google マップ - パソコン', 'Google Maps - Desktop']);
             
-            const idxDate = findIdx(['日付', 'Date']);
-            const idxSearch = findIdx(['検索', 'Search views on Search']);
-            const idxMap = findIdx(['マップ', 'Search views on Maps']);
-            const idxWeb = findIdx(['ウェブ', 'Website clicks']);
             const idxCall = findIdx(['通話', 'Phone calls']);
+            const idxMsg = findIdx(['メッセージ', 'Messages']);
+            const idxBook = findIdx(['予約', 'Bookings']);
             const idxDir = findIdx(['ルート', 'Direction requests']);
+            const idxWeb = findIdx(['ウェブサイトのクリック', 'Website clicks']);
+            const idxOrder = findIdx(['料理の注文', 'Food orders']);
+            const idxMenu = findIdx(['フードメニューのクリック', 'Food menu clicks']);
 
-            if (idxDate === -1) return alert("日付カラムが見つかりません。");
+            // 3行目からがデータ（2行目は説明文）
+            const dataRow = rows[2];
+            if (!dataRow || dataRow.length < headers.length) return alert("データ行が見つかりません。");
 
-            const newData = dataRows.map(row => ({
-                day: row[idxDate].split('-').pop() + '日',
-                searchView: parseInt(row[idxSearch]) || 0,
-                mapView: parseInt(row[idxMap]) || 0,
-                website: parseInt(row[idxWeb]) || 0,
-                calls: parseInt(row[idxCall]) || 0,
-                directions: parseInt(row[idxDir]) || 0
-            }));
+            const getVal = (idx) => parseInt(dataRow[idx]) || 0;
 
-            // 合計計算
-            const sumViews = newData.reduce((acc, curr) => acc + curr.searchView + curr.mapView, 0);
-            const sumActions = newData.reduce((acc, curr) => acc + curr.website + curr.calls + curr.directions, 0);
+            const breakdown = {
+                mobileSearch: getVal(idxSearchMobile),
+                desktopSearch: getVal(idxSearchDesktop),
+                mobileMap: getVal(idxMapMobile),
+                desktopMap: getVal(idxMapDesktop),
+                calls: getVal(idxCall),
+                messages: getVal(idxMsg),
+                bookings: getVal(idxBook),
+                directions: getVal(idxDir),
+                website: getVal(idxWeb),
+                orders: getVal(idxOrder),
+                menu: getVal(idxMenu)
+            };
+
+            const totalViews = breakdown.mobileSearch + breakdown.desktopSearch + breakdown.mobileMap + breakdown.desktopMap;
+            const totalActions = breakdown.calls + breakdown.messages + breakdown.bookings + breakdown.directions + breakdown.website + breakdown.orders + breakdown.menu;
 
             const report = appState.reports[appState.currentMonthKey];
-            report.data = newData;
-            report.config.totalViews = sumViews;
-            report.config.totalActions = sumActions;
+            report.config.businessName = dataRow[idxName] || report.config.businessName;
+            report.config.totalViews = totalViews;
+            report.config.totalActions = totalActions;
+            report.breakdown = breakdown;
 
             saveState();
-            alert(`インポート完了！\n表示回数: ${sumViews.toLocaleString()}\nアクション数: ${sumActions.toLocaleString()}`);
+            alert(`インポート成功！\n店舗名: ${report.config.businessName}\n総閲覧数: ${totalViews.toLocaleString()}`);
             render();
         }
 
@@ -445,9 +449,9 @@
             if (appState.reports[nextKey]) { alert("既に存在します"); return; }
 
             appState.reports[nextKey] = {
-                config: { ...appState.reports[lastKey].config, reportPeriod: `${nextYear}年${nextMonth}月1日 - ...`, totalViews: 0, totalActions: 0, comment: "" },
+                config: { ...appState.reports[lastKey].config, totalViews: 0, totalActions: 0, comment: "" },
                 keywords: [],
-                data: generateMockData(30)
+                breakdown: { ...appState.reports[lastKey].breakdown }
             };
             appState.currentMonthKey = nextKey;
             appState.activeTab = 'edit';
@@ -456,7 +460,7 @@
         }
 
         function handleDeleteMonth() {
-            if(Object.keys(appState.reports).length <= 1) return alert("これ以上削除できません");
+            if(Object.keys(appState.reports).length <= 1) return alert("削除不可");
             if(!confirm("削除しますか？")) return;
             delete appState.reports[appState.currentMonthKey];
             appState.currentMonthKey = Object.keys(appState.reports).sort().pop();
@@ -469,29 +473,20 @@
             if (!text) return;
             const lines = text.split(/\n/).map(l => l.trim()).filter(l => l);
             const newKeywords = [];
-            const oneLineRegex = /^(.+?)[\s\t]+(\d{1,3}(?:,\d{3})*|\d+)$/;
-            let isMulti = true;
-            for (let line of lines) { if (oneLineRegex.test(line)) { isMulti = false; break; } }
-            if (!isMulti) {
-                lines.forEach(line => {
-                    const m = line.match(oneLineRegex);
-                    if (m) newKeywords.push({ word: m[1], count: parseInt(m[2].replace(/,/g, '')) });
-                });
-            } else {
-                for (let i = 0; i < lines.length - 1; i++) {
-                    const cur = lines[i], nxt = lines[i+1];
-                    if (isNaN(parseInt(cur.replace(/,/g, ''))) && !isNaN(parseInt(nxt.replace(/,/g, '')))) {
-                        newKeywords.push({ word: cur, count: parseInt(nxt.replace(/,/g, '')) }); i++;
-                    }
+            lines.forEach(line => {
+                const parts = line.split(/[\s\t]+/);
+                if (parts.length >= 2) {
+                    const count = parseInt(parts.pop().replace(/,/g, ''));
+                    if (!isNaN(count)) newKeywords.push({ word: parts.join(' '), count: count });
                 }
-            }
+            });
             const sorted = newKeywords.sort((a,b) => b.count - a.count).slice(0, 5);
             if(sorted.length > 0) {
                 appState.reports[appState.currentMonthKey].keywords = sorted;
                 saveState();
                 document.getElementById('input-keywords-paste').value = "";
                 renderEditKeywords();
-                alert("解析完了");
+                render();
             }
         }
 
@@ -521,9 +516,12 @@
             document.getElementById('kpi-total-views').textContent = Number(report.config.totalViews).toLocaleString();
             document.getElementById('kpi-total-actions').textContent = Number(report.config.totalActions).toLocaleString();
             document.getElementById('kpi-rating').textContent = report.config.averageRating;
-            document.getElementById('kpi-review-count').textContent = `全レビュー数: ${report.config.reviewCount}`;
-            document.getElementById('kpi-photo-views').textContent = Math.round(report.config.totalViews * 1.5).toLocaleString();
             document.getElementById('comment-display').innerText = report.config.comment;
+
+            const b = report.breakdown || {};
+            const totalV = report.config.totalViews || 1;
+            const mobileRate = Math.round(((b.mobileSearch + b.mobileMap) / totalV) * 100);
+            document.getElementById('kpi-mobile-rate').textContent = mobileRate;
 
             const renderGr = (elId, val) => {
                 const el = document.getElementById(elId); const isP = val >= 0;
@@ -537,39 +535,48 @@
             kwContainer.innerHTML = report.keywords.length > 0 ? report.keywords.map(k => {
                 const max = Math.max(...report.keywords.map(kw => kw.count));
                 return `<div class="flex items-center justify-between group"><div class="flex-1"><div class="flex justify-between mb-1"><span class="text-sm font-medium text-gray-700">${k.word}</span><span class="text-sm text-gray-500">${k.count.toLocaleString()}回</span></div><div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-blue-500 h-2 rounded-full" style="width: ${(k.count/max)*100}%"></div></div></div></div>`;
-            }).join('') : '<div class="text-center py-8 text-gray-400 text-sm">データなし</div>';
+            }).join('') : '<div class="text-center py-8 text-gray-400 text-sm border border-dashed rounded-lg">「データ編集」からキーワードを追加してください</div>';
 
-            drawCharts(report.data);
+            drawCharts(report);
         }
 
-        function drawCharts(data) {
-            const ctxV = document.getElementById('chart-views').getContext('2d');
-            if(charts.views) charts.views.destroy();
-            charts.views = new Chart(ctxV, {
-                type: 'line',
+        function drawCharts(report) {
+            const b = report.breakdown || {};
+            
+            // Chart 1: Device Breakdown (Doughnut)
+            const ctxD = document.getElementById('chart-devices').getContext('2d');
+            if(charts.devices) charts.devices.destroy();
+            charts.devices = new Chart(ctxD, {
+                type: 'doughnut',
                 data: {
-                    labels: data.map(d => d.day),
-                    datasets: [
-                        { label: '検索経由', data: data.map(d => d.searchView), borderColor: '#4285F4', backgroundColor: 'rgba(66, 133, 244, 0.1)', fill: true, tension: 0.3 },
-                        { label: 'マップ経由', data: data.map(d => d.mapView), borderColor: '#EA4335', backgroundColor: 'rgba(234, 67, 53, 0.1)', fill: true, tension: 0.3 }
-                    ]
+                    labels: ['モバイル検索', 'デスクトップ検索', 'モバイルマップ', 'デスクトップマップ'],
+                    datasets: [{
+                        data: [b.mobileSearch, b.desktopSearch, b.mobileMap, b.desktopMap],
+                        backgroundColor: ['#4285F4', '#93BAFB', '#EA4335', '#F5A29B']
+                    }]
                 },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
             });
 
-            const ctxA = document.getElementById('chart-actions').getContext('2d');
+            // Chart 2: Action Breakdown (Horizontal Bar)
+            const ctxA = document.getElementById('chart-actions-details').getContext('2d');
             if(charts.actions) charts.actions.destroy();
             charts.actions = new Chart(ctxA, {
                 type: 'bar',
                 data: {
-                    labels: data.map(d => d.day).filter((_, i) => i % 5 === 0),
-                    datasets: [
-                        { label: 'ウェブサイト', data: data.map(d => d.website).filter((_, i) => i % 5 === 0), backgroundColor: '#4285F4' },
-                        { label: '通話', data: data.map(d => d.calls).filter((_, i) => i % 5 === 0), backgroundColor: '#34A853' },
-                        { label: 'ルート検索', data: data.map(d => d.directions).filter((_, i) => i % 5 === 0), backgroundColor: '#FBBC04' }
-                    ]
+                    labels: ['ウェブサイト', 'ルート', 'メニュー', '通話', 'メッセージ', '予約', '注文'],
+                    datasets: [{
+                        label: 'アクション回数',
+                        data: [b.website, b.directions, b.menu, b.calls, b.messages, b.bookings, b.orders],
+                        backgroundColor: '#34A853'
+                    }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }
+                options: { 
+                    indexAxis: 'y',
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
             });
         }
 
